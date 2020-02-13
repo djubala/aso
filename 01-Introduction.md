@@ -65,29 +65,29 @@ La gestió de xarxes es una feina que no correspon al 100% als administradors de
 
 ## Codi d'ètica de l'administrador
 
-No hi ha limitacions tecnològiques per a que un administrador accedeixi als correus electrònics o monitoritzi els usuaris. El codi d'ètica de l'administrador impedeix accedir a la informació transmesa en els correus dels usuaris. No pot fer la monitorizació pel seu compte, ha de ser "política de l'empresa" i els usuaris han d'estar informats. Si els contractes dels empleats diuen que la informació dels usuaris és de l'empresa, aquesta pot actuar legalment contra un empleat que usa els recursos de l'empresa de forma personal.
+No hi ha limitacions tecnològiques per a que un administrador accedeixi als correus electrònics o monitoritzi els usuaris. El codi d'ètica de l'administrador ens impedeix accedir a aquesta informació. No podem fer la monitorizació pel nostre compte, ha de ser "política de l'empresa" i els usuaris han d'estar informats. Si els contractes dels empleats diuen que la informació dels usuaris és de l'empresa, aquesta pot actuar legalment contra un empleat que usa els recursos de l'empresa de forma personal.
 
 Els principis del codi d'ètica de l'administrador són:
 
 * Professionalitat: Mantenir els aspectes personals al marge de la feina
 * Integritat personal: Honestedat, capacitat per admetre les limitacions i els errors propis
 * Privacitat: Mantenir la confidencialitat de les dades dels altres i accedir a informació privilegiada només quan és estrictament necessari
-* Educació, lleis i polítiques d'ús: Mantenir-se informat sobre els normes que afecten a la seva feina, compartir el coneixement amb els altres
+* Educació, lleis i polítiques d'ús: Mantenir-se informat sobre les normes que afecten a la seva feina, compartir el coneixement amb els altres
 * Comunicació: Informar als usuaris d'allò que els afecta
 
 ## Código penal
 
-És l'únic d'aquests que pot comportar penes de presó, tots els altres nomes comporten sancions econòmiques.
+És l'únic d'aquests que pot comportar penes de presó, tots els altres només comporten sancions econòmiques.
 
 ## Ley Orgánica de Protección de Datos (LOPD)
 
-Regula el tractament dels fitxers de dades. La companyia/institució ha de notificar a la **Agencia de Protección de Datos** l'existència dels fitxers. L'agència ens dona un interval de temps per complir les mesures de seguretat indicades a la llei (backups, tipus de xifrat...). Els contractes hauran d'estar escrits en consonància amb la llei (recollida de dades en formularis).
+Regula el tractament dels fitxers de dades. La companyia/institució ha de notificar a la **Agencia de Protección de Datos** l'existència dels fitxers. L'agència ens dona un interval de temps per complir les mesures de seguretat indicades per la llei (backups, tipus de xifrat...). Els contractes hauran d'estar escrits en consonància amb la llei (recollida de dades en formularis).
 
 ## Ley de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSICE)
 
-Regula les webs que tinguin finalitats econòmiques. Afecta més als desenvolupadors web que als administradors. Entre d'altres, exigeix que s'especifiqui clarament el preu dels productes i el Spam. El Spam és l'enviament de correus (sovint publicitaris) sense autorització prèvia.
+Regula les webs que tinguin finalitats econòmiques. Afecta més als desenvolupadors web que als administradors. Entre d'altres, exigeix que s'especifiqui clarament el preu dels productes i Spam. El Spam és l'enviament de correus (sovint publicitaris) sense autorització prèvia.
 
-## Ley para el Impulso de la Sociedad de la Información
+## Ley para el Impulso de la Sociedad de la Información (LISI)
 
 Regula aspectes d'accesibilitat a les pàgines web. Entre d'altres, controla característiques com ara la mida de les fonts o el contrast dels colors.
 
@@ -95,7 +95,7 @@ Regula aspectes d'accesibilitat a les pàgines web. Entre d'altres, controla car
 
 * `rmdir`: Elimina un directori buit. Amb `rmdir -p` eliminem els directoris superiors que també estiguin buits. Per exemple, `rmdir -p a/b/c` equival a `rmdir a/b/c a/b a`. *Ojo*, perquè en aquest cas, la comanda `rmdir a a/b a/b/c` donaria error al intentar eliminar primer `a`, que no està buit.
 * `apropos`: Amb `apropos keyword`, busquem a quines pàgines del manual apareix la paraula `keyword` a la secció `NAME` de la pàgina. La secció sol ser una descripció en una sola línia de la comanda, com ara `ls - list directory contents`.
-* `find path -name pattern`: Busca recursivament fitxers a partir del `path` que el seu nom coincideixi  amb el `pattern`. *Ojo* amb aquest exemple: `find /home/david/ -name "*.err"`. Posem les `"` per evitar que la shell expandeixi l'asterisc, ja que volem que l'asterisc arribi a l'input del `find`.
+* `find path -name pattern`: Busca recursivament fitxers a partir del `path` que el seu nom coincideixi  amb el `pattern`. *Ojo* amb aquest exemple: `find /home/david/ -name "*.err"`. Posem les `"` per evitar que la shell expandeixi l'asterisc, ja que volem que la shell no faci expansió i l'asterisc arribi a l'input del `find`.
 
 ## Particionat i preparació del disc
 
@@ -104,6 +104,38 @@ Regula aspectes d'accesibilitat a les pàgines web. Entre d'altres, controla car
 * `mkswap`: Crea una partició de swap
 * `mount`: Munta un sistema de fitxers dins d'un altre.
 
-## Operacions de redirecció de la shell
+## Operacions de redirecció de la shell (bash)
 
-Per defecte, els *file descriptors* `0`, `1`, i `2` corresponen a `stdin`, `stdout` i `stderr`.
+Per defecte, els *file descriptors* `0`, `1`, i `2` corresponen a `stdin`, `stdout` i `stderr`. Normalment els tres apunten a un mateix dispositiu terminal com `/dev/pts/n` (terminal gràfic) o `/dev/ttyn` (terminal com el que entres fent CTRL+ALT+F1).
+
+Els *file descriptors* sempre tenen un fitxer o un dispositiu al darrere, que està obert amb uns permisos d'input i/o output.
+
+### Redireccions <, >, >> i pipes |
+
+* `command n<file` redirecciona el contingut del fitxer `file` cap al *fd* `n`. `<file` és el mateix que `0<file`.
+
+* `command n>file` crea un nou fitxer `file` (l'eliminia prèviament si ja existia) i redirecciona l'output del  *fd* `n` cap al fitxer `file`. `>file` és el mateix que `1>file`. Si ultilitzem l'operador `|>`, la redirecció fallarà si `file` ja existeix.
+
+* `command n>>file`: similar a `>`, però si `file`ja existeix fa un *append* del nou output.`>>file` equival a redireccionar `stdout` cap a `file`.
+
+* `command1 | command2` redirecciona l'`stdout` del `command1` cap a l'`stdin` del `command2`.
+
+*Ojo*, si el *file descriptor* `n` no existeix, estarem obrint un nou *file descriptor*. També cal tenir en compte que la shell fa expansió de `file`. Si volem evitar-ho, caldrà escapar-ho d'alguna manera.
+
+### *Here strings* i *here documents*
+
+En resum, els *here strings* (`<<<`) ens permeten redireccionar un string cap al `stdin` i els *here docs* ens permeten fer el mateix amb un bloc multilínia (`<<`).
+
+### Duplicació de *file descriptors*
+
+A partir d'ara, `word` pot ser un dígit o un nom de fitxer.
+
+* `n<&word` duplica un input *fd*. `n` passarà a apuntar a on apunta `word`. Per exemple, `>file 2>&1` redirecciona `stderr` i `stdout` cap a `file`. Pero *muchísimo ojo* perquè bash interpreta les redireccions d'esquerra a dreta i `2>&1 >file` no seria equivalent, ja que acabaria amb `stderr`apuntant al terminal i `stdout`apuntant a `file`. Si no posem `n` equival a `stdin`.
+
+* `n>&word` duplica un output *fd*. Es comporta de manera similar.
+
+* `&>>word` equival a redireccionar `stdin` **i** `stderr` cap a `word` (amb *append*).
+
+### Moure *file descriptors*
+
+`n<&digit-` i `n>&digit-` fan que el *fd* `n` apunti a `digit`, i després tanquen el *fd* `digit`. `n<&-` i `n>&-` tanquen l'*fd* `n`. Si no especifiquem `n`, equivalen a `stdin` i `stdout`.
