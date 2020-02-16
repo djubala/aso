@@ -112,9 +112,9 @@ Els *file descriptors* sempre tenen un fitxer o un dispositiu al darrere, que es
 
 ### Redireccions <, >, >> i pipes |
 
-* `command n<file` redirecciona el contingut del fitxer `file` cap al *fd* `n`. `<file` és el mateix que `0<file`.
+* `command n<file` redirecciona el contingut del fitxer `file` cap al fd `n`. `<file` és el mateix que `0<file`.
 
-* `command n>file` crea un nou fitxer `file` (l'eliminia prèviament si ja existia) i redirecciona l'output del  *fd* `n` cap al fitxer `file`. `>file` és el mateix que `1>file`. Si ultilitzem l'operador `|>`, la redirecció fallarà si `file` ja existeix.
+* `command n>file` crea un nou fitxer `file` (l'eliminia prèviament si ja existia) i redirecciona l'output del  fd `n` cap al fitxer `file`. `>file` és el mateix que `1>file`. Si ultilitzem l'operador `|>`, la redirecció fallarà si `file` ja existeix.
 
 * `command n>>file`: similar a `>`, però si `file`ja existeix fa un *append* del nou output.`>>file` equival a redireccionar `stdout` cap a `file`.
 
@@ -130,12 +130,12 @@ En resum, els *here strings* (`<<<`) ens permeten redireccionar un string cap al
 
 A partir d'ara, `word` pot ser un dígit o un nom de fitxer.
 
-* `n<&word` duplica un input *fd*. `n` passarà a apuntar a on apunta `word`. Per exemple, `>file 2>&1` redirecciona `stderr` i `stdout` cap a `file`. Pero *muchísimo ojo* perquè bash interpreta les redireccions d'esquerra a dreta i `2>&1 >file` no seria equivalent, ja que acabaria amb `stderr`apuntant al terminal i `stdout`apuntant a `file`. Si no posem `n` equival a `stdin`.
+* `n<&word` duplica un input fd. `n` passarà a apuntar a on apunta `word`. Per exemple, `>file 2>&1` redirecciona `stderr` i `stdout` cap a `file`. Pero *muchísimo ojo* perquè bash interpreta les redireccions d'esquerra a dreta i `2>&1 >file` no seria equivalent, ja que acabaria amb `stderr`apuntant al terminal i `stdout`apuntant a `file`. Si no posem `n` equival a `stdin`.
 
-* `n>&word` duplica un output *fd*. Es comporta de manera similar.
+* `n>&word` duplica un output fd. Es comporta de manera similar.
 
 * `&>>word` equival a redireccionar `stdin` **i** `stderr` cap a `word` (amb *append*).
 
 ### Moure *file descriptors*
 
-`n<&digit-` i `n>&digit-` fan que el *fd* `n` apunti a `digit`, i després tanquen el *fd* `digit`. `n<&-` i `n>&-` tanquen l'*fd* `n`. Si no especifiquem `n`, equivalen a `stdin` i `stdout`.
+`n<&digit-` i `n>&digit-` fan que el fd `n` apunti a `digit`, i després tanquen el fd `digit`. `n<&-` i `n>&-` tanquen l'fd `n`. Si no especifiquem `n`, equivalen a `stdin` i `stdout`.
