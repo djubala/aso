@@ -1,0 +1,120 @@
+***************
+* Pregunta 1. *
+***************
+
+A partir del codigo fuente:
++ proporciona al administrador un control elevado del proceso de
+  instalacion/compilacion
++ podemos utilizar flags de compilacion especificos para nuestra arquitectura
+  para optimizar nuestro binario (aunque hay pruebas que demuestran que algunos
+  binarios precompilados son mas rapidos)
+- el proceso de compilacion y instalacion puesde ser lento y suele implicar
+  lectura de documentacion
+- si aparece un parche de seguridad tardaremos mas en poder aplicarlo
+
+Binarios autoinstalables
++ Son autoinstalables: se instalan solos
+- A veces es nescesario hacer alguna configuracion adicional manualmente,
+  sobretodo con configuraciones especificas de la distribucion
+-
+**************
+* Pregunta 2 *
+**************
+
+
+**************
+* Pregunta 3 *
+**************
+
+Un punto de montaje nos permite insertar otro sistema de ficheros dentro del
+sistema de ficheros principal de nuestro sistema. Con el comando mount
+indicamos el dispositivo que contiene el sistema de ficheros que montaremos y
+el punto de montaje, que es la ubicacion en nuestro sistema de ficheros donde
+lo insertaremos.
+
+El fichero fstab contiene los puntos de montaje y los dispositivos que se
+montaran en tiempo de boot. Tambien se especifica en este fichero que
+dispositivo (particion) utiliaremos como area de swap.
+
+**************
+* Pregunta 4 *
+**************
+
+Compraria un disco de 1,5 TB y lo distribuiria asi
+- Una particion primaria de 50 GB para / del sistema (con /usr/local)
+  Sabemos que una instalacion de Debian ocupa alrededor de 20 GB, asi que
+  sobredimensionaremos un poco. Seria una particion bootable.
+- El swap debe ser el doble de la memoria RAM. Tenemos requisitos muy altos,
+  asi que asumiremos 64 GB de RAM. Deberemos reservar 128 GB para el swap.
+- Haremos una particion primaria exclusivamente para la base de datos.
+  Contaremos con una sobredimension del 20%, asi que le daremos 600 GB.
+- Ahora crearemos una particion extendida con los ~700 GB restantes:
+  - Asignaremos las ~700 GB que quedan a los usuarios. Tenemos espacio para
+    4 usuarios mas o una sobredimensión del 40%.
+  - Tambien podemos retirar espacio de esta ultima sobredimension para crear
+    mas particiones extendidasi, si las necesitamos.
+
+**************
+* Pregunta 5 *
+**************
+
+Ni idea.
+
+**************
+* Pregunta 5 *
+**************
+
+chgrp: cambiar el grupo de un fichero
+sudo: ejecutar un comando de shell con privilegios de superusuario
+chmod: cambiar los permisos de acceso de un fichero
+grep: busca el patron que especifiquemos en el contenido de un fichero. Tambien
+      puede buscar recursivamente en directorios.
+
+**************
+* Pregunta 2 *
+**************
+
+c)
+b)
+c)
+a)? o c) molt semblant. inicializa sembla particionar aixi que millor b)
+a)
+a)
+
+**************
+* Pregunta 3 *
+**************
+
+1.
+
+No funcionaria perque ens falta permis w en /shared (pero tenim x)
+
+2.
+
+No funciona porque nos falta acceso w a /shared/d1/f1 (pero tenemos x en /shared/d1).
+
+3.
+
+Funciona: creara un arhcivo con "Testing\n" llamado /shared/d1/f3.
+
+4.
+
+El /etc/shadow es propiedad del superuser y solo lo puede modificar el. El bit
+de setuid hace que adquiramos los privilegios del owner del /usr/bin/passwd,
+que es el superuser (root). De esta manera, un usario normal podra ejecutar
+passwd y cambiar su contrasenya.
+
+5.
+
+Fallaria en la part d'escriure el fitxer copiat, ja que ens falta acces w a
+/shared (pero tenim x)
+
+6.
+
+No funcionaria, porque necesitamos w en shared/d2 (pero tenemos x)
+
+7.
+
+Funciona porque tenemos acceso wx a d1 y d2
+
+

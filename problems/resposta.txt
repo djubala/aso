@@ -1,0 +1,22 @@
+1. Nomes el pugui modificar el propietari
+   Aixo vol dir que nomes el propietari pot tenir acces w al fitxer. Tambe
+   necessitara com a minim acces x al directori pare.
+
+2. El pugui llegir tot el grup
+   Cal donar-li acces r al grup. Aixo vol dir que tambe necessitaran acces x al
+   directori pare.
+
+3. Nomes el pugui esborrar el propietari
+   Per esborrar un fitxer necessitem acces wx al directori pare. El propietari
+   ja te acces x pel punt 1, nomes li faltara acces w.
+
+4. Nomes el propietari pugui fer un ls del directori
+   Assumeixo que es refereix a ls pur (nomes nom dels fitxers continguts en el
+   directori). Nomes donem acces r al directori pare al propietari.
+
+PERMISOS   USER  GROUP FILE
+rwx--x--- aso01 aso01 ./dirdades
+-w-r----- aso01 aso01 ./dirdades/dades.txt
+ 
+OjO: tal com esta, aso pot escriure dades.txt pero no podra llegir-lo, ja que
+encara que l'owner pertanyi al grup no hereda els permisos del grup.
