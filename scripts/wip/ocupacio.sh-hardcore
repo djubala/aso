@@ -1,0 +1,56 @@
+#!/bin/bash
+
+g=0
+usage="Usage: ocupacio.sh [-g grup] max_permes"
+
+if [ $# -eq 1 ]; then
+	hmax=$1
+elif [ $# -eq 3 ]; then
+	if [ $1 == "-g" ]; then
+		g=1
+		grup=$2
+		hmax=$3
+	else
+		echo $usage; exit 1
+	fi
+else
+	echo $usage; exit 1
+fi
+
+max=$(numfmt --from=auto --to=none $hmax)
+if [ $? -ne 0 ]; then
+	echo "ocupacio.sh: $hmax: Invalid number for max_permes"; exit 1
+fi
+
+#DEBUG
+echo hmax=$hmax
+echo max=$max
+
+if [ $g -eq 0 ]; then
+	users=$(cat /etc/passwd | cut -d: -f1)
+else
+    grupinfo=$(grep "^$grup\>" /etc/group)
+	if [ $? -ne 0 ]; then
+		echo "ocupacio.sh: $grup: Group does not exist"; exit 1
+	fi
+
+	# secondary group members 
+    echo $grupinfo
+    # 1st cut: select users in group. 2nd cut: separate users with , as delimiter
+	users1=$(echo $grupinfo | cut -d: -f4 | tr "," "\n")
+    echo users1=$users1
+
+	# primary group members
+	gid=$(echo $grupinfo | cut -d: -f3)
+	echo $gid
+	# try later
+	#users2=$(awk -F: "/\$4 == \"$gid\"/ {print \$1}" /etc/passwd)
+	users2=$(grep -E "*:*:*:$gid:*" /etc/passwd | cut -d: -f1)
+	echo users2=$users2
+	echo $users1 $users2
+fi
+
+for user in $(cat /etc/passwd | cut -d: -f1); do
+	echo >/dev/null
+done
+

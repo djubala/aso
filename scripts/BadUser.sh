@@ -21,8 +21,9 @@ fi
 for user in `cat /etc/passwd | cut -d: -f1`; do
 	## ^user\> linies que comencen per $user i final de paraula
 	home=`cat /etc/passwd | grep "^$user\>" | cut -d: -f6`
-## he afegit "" perque s'em queixava amb avahi-autoipd
+	## he afegit "" perque s'em queixava amb avahi-autoipd
 	if [ -d "$home" ]; then
+		## -igonre_readdir_race error en proc de que el fitxer ha sigut eliminat
 		num_fich=`find $home -type f -user $user | wc -l`
 	else
 		num_fich=0

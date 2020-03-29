@@ -5,7 +5,7 @@ $p=0;
 $usage="Usage: BadUsers.pl [-p] \n";
 if ( $numArgs != 0){
 	if ( $numArgs == 1 ){
-		if ( $ARGV[1] eq "-p" ) { # si el primer argument es -p
+		if ( $ARGV[0] eq "-p" ) { # si el primer argument es -p
 			$p=1; # activem el flag p
 		} else { print $usage; exit (1); }
 	} else { print $usage; exit (1); }
