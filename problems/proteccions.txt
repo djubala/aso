@@ -1,3 +1,18 @@
+Assigneu les proteccions a directoris i fitxers per tal que el fitxer...
+
+    $ ls -l ./dirdades/dades.txt
+
+    -rw-rw-r--    1 aso01    aso01        9778   Nov 28   18:10  ./dirdades/dades.txt
+
+Nomes el pugui modificar el propietari
+El pugui llegir tot el grup
+Nomes el pugui esborrar el propietari
+Nomes el propietari pugui fer un ls del directori
+
+Cal que les 4 condicions es compleixin a l'hora.
+
+Entregueu el vostre informe en format PDF (o TXT) a través del Racó.
+
 1. Nomes el pugui modificar el propietari
    Aixo vol dir que nomes el propietari pot tenir acces w al fitxer. Tambe
    necessitara com a minim acces x al directori pare.
