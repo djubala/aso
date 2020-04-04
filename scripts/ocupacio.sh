@@ -24,7 +24,7 @@ hmax=${hmax%B}
 # convert to bytes
 max=$(numfmt --from=auto --to=none $hmax)
 if [ $? -ne 0 ]; then
-	# TODO removed accidentally
+	echo "ocupacio.sh: format error for max_permes" 1>&2; exit 1
 	exit 1
 fi
 
