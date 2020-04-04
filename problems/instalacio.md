@@ -9,7 +9,7 @@
   
 ## tar
 
-El tar (Tape ARchive) és un format que ens permet empaquetar diversos fitxers i directoris dins d'un únic fitxer .tar. No incorpora cap tipus de compressió.
+El tar (**T**ape **AR**chive) és un format que ens permet empaquetar diversos fitxers i directoris dins d'un únic fitxer .tar. No incorpora cap tipus de compressió.
 
 * Per veure els seus continguts, podem fer servir GNU tar així:
 
@@ -20,7 +20,7 @@ aso/scripts/
 aso/scripts/BadUser.sh
 aso/scripts/BadUsers.sh
 ```
-* També podem passar com argument despres del -t els fitxers i directoris dins del .tar que volem que llisti. Fins i tot podem especificar wildcards.
+* També podem passar com argument despres del `-t` els fitxers i directoris dins del .tar que volem que llisti. Fins i tot podem especificar wildcards.
 
 ```
 $ tar -t aso/scripts/ -f aso.tar
@@ -40,7 +40,7 @@ aso/scripts/BadUsers.sh
 $ tar -xf aso.tar
 ```
 
-* També podem passar com argument després del -x els fitxers dins del tar que volem extreure. Crearà una jerarquia de directoris que només conté els fitxers que hem especificat. També admet els wildcards de la mateixa manera que l'exemple anterior.
+* També podem passar com argument després del `-x` els fitxers dins del .tar que volem extreure. Crearà una jerarquia de directoris que només conté els fitxers que hem especificat. També admet els wildcards de la mateixa manera que a l'exemple anterior.
 
 ```
 $ tar -x aso/scripts/BadUser.sh -f aso.tar
@@ -48,10 +48,12 @@ $ tar -x aso/scripts/BadUser.sh -f aso.tar
 
 ## gz
 
-El format .gz (GNU Zip) és un format únicament de compressió. Això vol dir que no és capaç de combinar múltiples fitxers en un de sol, com el tar, sinó que només pot comprimir fitxers de dades individuals. Per aquest motiu, moltes vegades es complementa amb el .tar per tal de comprimir directoris. D'aquets manera podrem comprimir un .tar i convertit-lo en un .tar.gz.
+El format .gz (**GNU Z**ip) és un format únicament de compressió. Això vol dir que no és capaç de combinar múltiples fitxers en un de sol, com el tar, sinó que només pot comprimir fitxers de dades individuals. Per aquest motiu, moltes vegades es complementa amb el .tar per tal de comprimir directoris. D'aquets manera podrem comprimir un .tar i convertit-lo en un .tar.gz.
 
-* Utilitzant l'opció -l podem saber el nom i la mida del fitxer abans i després de ser comprimit:
+* Utilitzant l'opció `-l` podem saber el nom i la mida del fitxer abans i després de ser comprimit:
 
 ```
 $ gzip -l BadUser.sh.gz
-
+         compressed        uncompressed  ratio uncompressed_name
+                650                1194  48.0% BadUser.sh
+```
