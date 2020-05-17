@@ -1,0 +1,181 @@
+Profile i entorn d'usuari:
+
+La definició del promp és a la variable PS1.
+Hauríem de fer PS1='\u (\D{%a %B %d}) >'
+man bash apartat PROMPING
+
+Creació de manuals d'usuaris:
+
+paràmetres / Usuari Usuari 1 Usuari 2
+UID 1001 1002
+Username eloi david
+Directori home /home/eloi /home/david
+Shell /bin/bash /bin/bash
+Grups (sudo aso netdev) (sudo aso netdev)
+
+Per assignar l'UID, he vist que l'usuari actual aso té UID 1000 i he anat
+incrementant.
+Pels grups he posat els mateixos que a l'usuari aso. Em sembla que el netdev és
+una cosa pròpia del meu escriptori.
+Crear grup (d'usuari): addgroup <group>
+Afegir usuari al grup: adduser <user> <group>
+
+Imagino que vipw deu incorporar algun tipus de fitxer de lock per tal d'evitar
+tenir dues persones editant el fitxer /etc/passwd a la vegada. Semblant al
+visudo i altres.
+
+Per desactivar el compte he posat /usr/sbin/nologin com a shell.
+Per canviar l'ownership dels directoris, chown -R <user>:<group> <directori>. El
+-R és de recursiu.
+Els permisos els he vist bé, pero si no faria servir chmod.
+
+Per canviar el password he fet passwd <user>.
+El shadow té el password de l'usuari hashejat i també informació sobre la
+caducitat.
+Es pot canviar la data de caducitat del password amb chage.
+
+Creació automàtica d'usuaris
+
+* Els professors tindran control d'accés a nivell de grup a tots els fitxers.
+  de tots els usuaris definits. És a dir: l'accés dels professors a fitxers i
+  directoris dels altres usuaris vindrà determinat pels permisos de grup
+  d'aquests fitxers i directoris.
+* Els becaris tindran control d'accés, a nivell de grup, a tots els fitxers de
+  tots els usuaris, exceptuant els dels usuaris professors.
+* Els administradors han de poder accedir, a nivell de grup, als fitxers dels
+  seus companys de grup, i a cap altre més.
+* Els usuaris que representen la resta de grup de pràctiques NO tindran accés,
+  a nivell de grup, als fitxers dels professors, ni dels becaris, ni dels
+  administradors, ni dels altres grups de pràctiques.
+
+La meva proposta:
+Grups primaris:
+* profe1-3: grup profes
+adduser --ingroup profes profe01
+adduser --ingroup profes profe02
+adduser --ingroup profes profe03
+adduser --ingroup becaris becari
+# eloi i david ja existeixen
+# adduser --ingroup admin eloi
+# adduser --ingroup admin david
+adduser aso01
+adduser aso02
+adduser aso03
+adduser aso04
+* becari: grup becaris (només hi ha un becari, pero a l'enunciat diu becaris,
+  aixi que potser poden apareixer mes.
+* eloi i david (administradors): admin
+* aso01-04: grup primari de l'usuari (si posessim un grup colectiu alumnes, els
+  grups es podrien copiar els uns als altres
+
+Per cambiar el grup primari d'un usuari existent, usermod -g <group> <user>
+He intentat eliminar els grups propis. Si es vol fer a mà, mirar el /etc/passwd
+i /etc/gpasswd. Els unics que tenen grups propis son els alumnes.
+
+Grups:
+* profe1-3: profes, becaris, admin, aso01-04
+* becari: becaris, admin, aso01-04
+* eloi i david (aministradors): res, suficient amb el grup primari
+* aso01-04: res, suficient amb el grup primari
+
+Commandes per crear els grups i usuaris:
+addgroup profes
+addgroup becaris
+# el grup admin ja existeix
+# addgroup admin
+
+adduser --ingroup profes profe01
+adduser --ingroup profes profe02
+adduser --ingroup profes profe03
+adduser --ingroup becaris becari
+# eloi i david ja existeixen
+# adduser --ingroup admin eloi
+# adduser --ingroup admin david
+adduser aso01
+adduser aso02
+adduser aso03
+adduser aso04
+
+No cal modificar els permisos (chmod), suficient amb fer chown si es necessari.
+No seria necessari chmod, els grups i els homes estan ben fets amb adduser.
+
+Eliminació i desactivació d'usuaris
+
+deluser --remove-all-files <user>
+Esborra l'usuari i tots els seus fitxers.
+
+Si no volem acabar amb l'usuari podem fer servir
+find <origin> -user <user> -exec rm -rf {} \;
+* En el origin intentaria evitar el sys i el proc, que potser donen problemes
+* Per cada coincidencia que trobi el find, la substituirà pel {} i executarà
+  el rm -rf.
+* La ; serveix per indicar que volem un exec per cada match. El backspace és
+  per evitar que la shell interpreti el ; com fi de commanda.
+* Si canviessim ; per +, s'executari un sol rm amb tots els matches.
+* La -f fa que no es queixi si el fitxer no existeix, útil si eliminem un
+  directori pare amb el -r.
+* Si tenim un directori amb propietari user1 amb fitxers d'altres usuaris a
+  l'interior, se'ls carregarà igual (-r).
+
+deluser --backup-to <dir> <user>
+Esborra l'usuari i fa un .tar.gz amb tots els fitxers al directori dir
+
+Si no volem esborrar l'usuari podem fer
+find <origin> -user <user> -exec cp --parents -rn {} <backupdir> \;
+* --parents replica l'estructura de directoris quan copiem. Per exemple, si fem
+  cp --parents /aqui/kk /alla, acabem tenint un /alla/aqui/kk.
+* Si tenim un directori amb propietari user1 amb fitxers d'altres usuaris a
+  l'interior, els copiarà tots (-r).
+* El -n fa que no sobrescrivim fitxers amb la còpia. Útil per estalviar-nos
+  feina, ja que si copiem recursivament (-r)  un directori, ens estalviem
+  tornar a copiar després els seus continguts.
+
+Per copiar únicament fitxers (i links) de l'usuari, podem fer:
+find <origin> -user <user> -type f,l -exec cp --parents {} <backupdir> \;
+* Ja no tenim el problema del -rn!
+* Tampoc copiarem directoris sencers amb fitxers d'altres usuaris.
+
+Versió amb xargs (https://www.everythingcli.org/find-exec-vs-find-xargs):
+find <origin> -user <user> -print0 2>/dev/null | xargs -0 cp -t <backupdir> --parents -rn 
+* Utlitzem un null character (/0) com delimitador. Soluciona el problema dels espais.
+* El -print0 va al final del find, si no es torna boig.
+* el cp -t serveix per posar primer origen i després destí.
+
+Per provar el tailscript es pot ser su - <user>.
+El man aconsella su --login <user> pero no ho tinc gaire clar.
+
+PASSO DE FER L'SCRIPT
+
+Usuari especial asosh
+
+Permisos i ownership per asosh:
+chown asosh:asosh /usr/local/asosh/bin/asosh
+chmod u=rx,g=-,o=- /usr/local/asosh/bin/asosh
+
+Creem l'usuari asosh (homeless)
+adduser --shell /usr/local/asosh/bin/asosh --shell /usr/local/asosh/bin/asosh --no-create-home asosh
+Entrada a l'/etc/passwd:
+asosh:x:1011:1008:,,,:/home/asosh:/usr/local/asosh/bin/asosh
+
+Sudo i control de l'execució d'aplicacions
+
+Lectures interessants: [Understanding the sudoers file](https://link.medium.com/huXUT8rvz6),
+man sudo (Cmnd_List)
+
+%profes ALL=(root:root) /usr/local/professors/bin/,/script/for/deleting/users
+%admin ALL=(root:root) ALL
+
+no hauria de funcionar si david fa sudo -u eloi whoami
+
+Per desactivar el login podem fer el truc de posar un shell tipus /bin/false o
+/usr/sbin/nologin.
+chsh -s <shell> <user>
+D'aquesta manera ja no funciona el su [-] <user>. Ni tan sols amb sudo. Pero el
+que si que funciona es sudo su [-] <user> -s /bin/bash.
+
+També es pot anar al /etc/shadow i posar un ! (*) al principi del camp
+password (el 2n). Per tornar a activar, borrem el !. Equival a fer
+passwd -l <user> i passwd -u <user>. Aquest truc permet que encara es pugui fer
+login amb ssh key. Pero ja no funciona el su [-] <user>, s'ha de fer sudo su
+per a que funcioni.
+
