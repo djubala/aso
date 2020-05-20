@@ -262,7 +262,8 @@ es poden fer hard links a directoris.
 * La restauració és extremadament simple. Podriem fer un `rsync` a la inversa
   per tal de només substituir els fitxers més recents i tornar al passat. Ojo,
   no volem eliminar els excludes, així que no posarem el flag
-  `--delete-excluded`.
+  `--delete-excluded`. És necessari seguir posant el `EXCLUDE_FILE`, per a que
+  no esborri els fitxers exclosos que hi són al destí però no a l'origen.
 ```bash
 rsync -va --delete --exclude-from EXCLUDE_FILE /backup/snapshots/daily.N/ /root
 ```
