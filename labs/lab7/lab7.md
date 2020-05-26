@@ -16,7 +16,7 @@ superuser privileges. How do we enable these privileges?*
 
 Podem afegir-lo al grup de `sudo`.
 
-... (pregunes del installer)
+(pregunes del installer)
 
 *First we need to create an empty virtual floppy disk named floppy.img, with
 1.44MB size, and format it with fat file system. Which commands are you going
@@ -34,6 +34,10 @@ file on it. `mount -t vfat floppy.img /mnt/ -o loop`. What is the purpose of
 Especifica que cal utilitzar una interfície de loop. És necessari quan volem
 muntar un filesystem que es troba a dins d'un fitxer de dades.
 
+Per a que funcionés vaig haver de canviar `--graphics sdl` per
+`--graphics vnc`. El preseed file no funcionava i deia que estava corrupted,
+vaig haver d'instal·lar manualment.
+
 ## 7.4 Network configuration
 
 *In order to create a permanent bridge in our system we have to edit the file
@@ -41,12 +45,16 @@ which contains the configuration of our network interfaces. Which one is it?*
 
 És el `/etc/network/interfaces`.
 
+[No vull tocar la configuració de xarxa en el portàtil]
+
 ## 7.5 Virtual machine control
 
 *How do we shutdown a vm? Reboot?*
 
 ```bash
 virsh shutdown vm_1
+virsh destroy vm_1 # force shutdown
+virsh undefine vm_1 # delete libvirt domain
 virsh reboot vm_1
 ```
 
