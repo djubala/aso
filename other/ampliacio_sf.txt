@@ -1,0 +1,35 @@
+Assumim nova partició per als usuaris nous
+
+1. Avisar usuaris
+2. Apagar el sistema i posar el disc
+3. Boot sense usuaris
+4. fdisk + mkfs
+5. Estat final desitjat /home --> /home/users_vells + /home/users_nous
+    Supòsit /home --> /dev/sda5
+    Nova partició --> /dev/sdb1
+6. umount /home
+7. mkdir /home/users_vells /home/users_nous
+8. mount /dev/sda5 /home/users_vells
+   mount /dev/sdb1 /home/users_nous
+9. vi /etc/fstab
+10. vipw
+    Canviar el home dels usuaris vells al nou path
+    
+Assumim disposem de tot el nou disc i moviment dels usuaris
+1. Avisar usuaris
+2. Apagar el sistema i posar el disc
+3. Boot sense usuaris
+4. fdisk + mkfs
+5. Estat inicial
+    Supòsit /home --> /dev/sda5
+    Nova partició --> /dev/sdb1
+    
+    Final --> /dev/sda5 --> free
+              /dev/sdb1 --> /home
+6. mkdir /homeTMP && mount /dev/sdb1 /homeTMP
+7. sudo mv /home/* /homeTMP/
+8. umount /homeTMP
+   umount /home
+   rmdir /homeTMP
+9. vi /etc/fstab --> /dev/sdb1  /home   ext4    defaults    0   1
+10. mount -a
