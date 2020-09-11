@@ -1,0 +1,106 @@
+# ASO - Parcial 2 - Curs 18-19 Q1
+
+## Pregunta 1 - Gestión del Sistema (4 puntos)
+
+1. Indica cuanta memoria disponible tiene el sistema
+
+8099488 KiB és la memòria que hi ha instal·lada.
+La memòria lliure són 225184 KiB. Els 3038912 KiB de buff/cache també podran
+ser utilitzats pels processos.
+
+2. Describe los campos en negrita de la salida del top. Ten en cuenta todas las
+líneas en negrita!
+
+**load average**: és la mitjana del nombre de processos en estat R o D en un
+moment determinat. El estat R significa *runnable*, és a dir, esperant a la cua
+a que el scheduler ens posi en execució. El estat D vol dir *uninterruptible
+sleep (usually IO)*. [Lectura interessant]
+(https://idea.popcount.org/2012-12-11-linux-process-states/). Bàsicament,
+aquesta mesura ens diu quants processos estan competint per la CPU en un moment
+determinat (no és 100% cert, hi ha una mena de mitjana). El top ens mostra el
+load average dels últims 1, 5, i 15 minuts.
+
+**Mem total**: KiB de memòria RAM instal·lats al sistema
+
+**Mem used**: memòria utilitzada (pel kernel, processos, buff/cache, etc.)
+
+**Mem free**: memòria no utilitzada
+
+**Mem buff/cache**: memòria utilitzada per la buffer cache, una mena de cache
+de blocs de disc en memòria. Aquesta memòria es pot al·locatar quan ja no queda
+free.
+
+**Swap total**:
+
+**Swap used**:
+
+**Swap free**:
+
+**Swap avail Mem**: memòria disponible per allocatar sense causar swapping
+
+**NI**: nice value d'un procés, valors alts indiquen prioritat baixa en
+l'scheduling, valors inferiors a 0 indiquen prioritat alta. Per defecte es 0,
+calen privilegis per baixar-lo.
+
+**VIRT**: memòria virtual d'un procés, tant estigui en RAM com en disc
+
+**RES**: memòria d'un procés resident en RAM
+
+**SHR**: memòria d'un procés compartida amb altres processos. Les llibreries
+dinàmiques entren en aquesta categoria.
+
+**S**: Estat. A part del R i el D, el S vol dir *interruptible sleep*, que es
+el que hi hauria quan esperem un signal, per exemple.
+
+**%CPU**:
+
+**%MEM**:
+
+**TIME+**: temps de CPU total que ha consumit el procés.
+
+3. Crees que hay algún mal funcionamiento en la máquina? Justifica la
+respuesta:
+
+El load average de la máquina es muy alto (~ 13), teniendo en cuenta que la
+mayoría de portátiles hoy en día no deben tener más de 4 cores.
+
+4. Tienes alguna idea si el usuario se queja de la batería de forma correcta o
+o realmente se trata de algún error no relacionado con el sistema en sí.
+
+Podemos ver que los procesos de firefox se llevan buena parte del %CPU. A
+veces, los navegadores pueden ser intensivos en CPU, pero quizá el usuario está
+sufriendo algún malware como un minador de bitcoins incorporado en una web o en
+un complemento.
+
+5. Què significa el valor de us, sy i de wa del top?
+
+És refreix a on ens hem passat el temps de CPU. us vol dir executant codi
+d'usuari, sys vol dir en codi de kernel (crides al sistema, interrupcions...) i
+wa, que vol dir temps bloquejats per IO.
+
+## Pregunta 2 - Backups
+
+4. Queremos crear una zona de scratch (zona para que todo el mundo pueda
+compartir documentos). Esta zona ha de tener la característica que todo el
+mundo del grupo scratchpueda escribir sin ningún límite, pero que solo el
+propietario pueda borrar los documentos quese han puesto. Es también muy
+importante que el resto de usuarios puedan acceder para leerlos ficheros.
+Indica qué permisos deberían haber en este directorio para poder ofrecer este
+servicio.
+
+drwxrwx---t root scratch /scratch
+Hay que activar el sticky bit!
+
+## Pregunta 3
+
+1. b)
+
+2. b)
+
+3. a)
+
+4. b)
+
+5. a)
+
+6. a)
